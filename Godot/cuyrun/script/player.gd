@@ -7,11 +7,14 @@ const JUMP_VELOCITY = -600.0
 
 
 func _physics_process(delta: float) -> void:
-	player_ui.animation = "run"
-	# Add the gravity.
-	print (velocity)
+	if velocity.x > 0 or velocity.x < 0:
+		player_ui.animation = "run"
+	else:
+		player_ui.animation = "idle"
+		
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		player_ui.animation = "jump"
 
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
@@ -21,6 +24,7 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("ui_left", "ui_right")
 	if direction:
+		player_ui.flip_h = direction < 0
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
