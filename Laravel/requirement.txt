@@ -1,0 +1,4 @@
+PHP 8.2
+MySQL
+Composer
+Node.js
