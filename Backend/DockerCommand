@@ -1,0 +1,11 @@
+docker image latest
+
+# Narik installer App, mau pakai redis/php/dll.
+docker image pull redis:latest
+
+#cek docker image
+docker image ls -a #semua
+docker image ls # cek yang berjalan
+
+#buat container
+docker container create --name contohredis redis:latest
