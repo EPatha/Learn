@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wp_network
+
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    restart: always
+    networks:
+      - wp_network
+
+  wordpress:
+    depends_on:
+      - mysql
+      - redis
+    build: .
+    container_name: wp_site
+    restart: always
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppassword
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_REDIS_HOST: redis
+    volumes:
+      - ./wordpress:/var/www/html
+    networks:
+      - wp_network
+
+volumes:
+  mysql_data:
+
+networks:
+  wp_network:
