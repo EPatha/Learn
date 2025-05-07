@@ -1,27 +1,38 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+// src/app/layout.tsx
+import '../styles/globals.css';  // Path to global styles
+import { ReactNode } from 'react';
+import Link from 'next/link';
+import Footer from '../components/Footer'; // Import the Footer component
 
-const interFont = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+const Layout = ({ children }: { children: ReactNode }) => {
+  return (
+    <>
+      <html lang="en">
+        <body>
+          {/* Navbar Section */}
+          <div className="navbar">
+            <ul>
+              <li><Link href="/">Home</Link></li>
+              <li><Link href="/about">About Us</Link></li>
+              <li><Link href="/portfolio">Portfolio</Link></li>
+            </ul>
+          </div>
 
-export const metadata: Metadata = {
-  title: "Mekanikace",
-  description: "Mekanikace is IT consulting company",
+
+          {/* Main Content */}
+          <div className="bg-black text-white min-h-screen">
+            <header>
+              <main>{children}</main> {/* Render child components */}
+            </header>
+          </div>
+
+          {/* Footer Section */}
+          <Footer />  {/* Add the Footer here */}
+          
+        </body>
+      </html>
+    </>
+  );
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className={`${interFont.variable} antialiased`}>
-        {children}
-      </body>
-    </html>
-  );
-}
+export default Layout;
